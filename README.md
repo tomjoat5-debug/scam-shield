@@ -65,13 +65,13 @@ Example output:
 
 ## How detection works
 
-- **Pattern library** (`scam_shield/patterns.json`, data separated from code): 12 common scam types, each with weighted keywords, strong-signal combinations, typical script points, advice and official verification channels.
+- **Pattern library** (`scam_shield/patterns.json`, data separated from code): 13 common scam types, each with weighted keywords, strong-signal combinations, typical script points, advice and official verification channels.
 - **Scoring**: a single ordinary word never triggers high risk. High / critical risk needs either a strong-signal combination or several medium signals stacked together.
 - **False-positive control**: benign patterns (official verification-code SMS, delivery notifications, bank balance SMS, everyday family chat) lower the score — unless a strong scam signal is present.
 - **AI voice / video clone**: keyword matching cannot catch a cloned voice, so when an impersonation scam arrives in a call / video context, the tool attaches a verification checklist instead (hang up and call back on the saved number, ask something only the real person knows, never transfer money on the call).
 - **Fully local**: no network calls, no data leaves your machine.
 
-Covered patterns: 冒充公检法， 冒充亲友借钱， 刷单返利， 虚假客服退款， 投资理财 / 杀猪盘， 中奖领奖， 冒充领导 / 老板， 机票退改签， 网贷注销 / 征信修复， 冒充快递丢件理赔， 兼职点赞 / 打字骗押金， AI 换脸换声。
+Covered patterns: 冒充公检法， 冒充亲友借钱， 刷单返利， 虚假客服退款， 投资理财 / 杀猪盘， 中奖领奖， 冒充领导 / 老板， 机票退改签， 网贷注销 / 征信修复， 冒充快递丢件理赔， 兼职点赞 / 打字骗押金， 屏幕共享远程控制， AI 换脸换声。
 
 ## Limitations — read this first
 
