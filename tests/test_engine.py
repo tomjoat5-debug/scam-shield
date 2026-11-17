@@ -99,6 +99,7 @@ BENIGN_CASES = [
     "今晚一起吃饭吗？老地方川菜馆，六点见，我请客。",
     "【建设银行】您尾号5678的信用卡于11月11日支出128.00元，当前余额4520.30元。",
     "您的包裹正在派送中，预计今天送达，请保持电话畅通。",
+    "房东说押金下周退给我。",
 ]
 
 
@@ -122,6 +123,20 @@ class TestScamCases(unittest.TestCase):
         self.assertIn(result["risk"], ("高", "极高"))
         self.assertIsNotNone(result["ai_clone_checklist"])
         self.assertIn("先挂断", result["ai_clone_checklist"][0])
+
+    def test_natural_speech_ai_clone_voice_impersonation(self):
+        # v1.1.1 回归：AI 克隆声音的自然口语，不说固定套话也要检出。
+        # 此前只命中“押金”一个词，判低风险。
+        text = (
+            "喂，妈，是我，我刚做完手术，声音有点哑，我现在在医院，"
+            "医生说要先交三万押金才能手术，你把钱打到我发你的那个账户上，快点"
+        )
+        result = analyze(text)
+        self.assertEqual(result["category_id"], "impersonate_family")
+        self.assertIn(result["risk"], ("高", "极高"))
+        self.assertTrue(any("回拨" in a for a in result["advice"]))
+        # 纯通话记录、没有“电话/视频”词，核验清单仍不附上（已知局限）。
+        self.assertIsNone(result["ai_clone_checklist"])
 
     def test_no_ai_clone_checklist_without_call_context(self):
         text = SCAM_CASES[0][1]  # 冒充公检法，纯文字，无电话/视频语境
